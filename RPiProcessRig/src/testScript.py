@@ -20,6 +20,7 @@ def main():
     IO.pumpOn()
     while x < 100:
         x = conv.adcConv(IO.readADC(7))
+        print x
         time.sleep(2)
     IO.pumpOff()
     IO.cleanUp()
