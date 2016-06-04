@@ -7,6 +7,6 @@ spiBus: 0
 spiDevice: 0
 
 #PWM Limits (See Docs)
-pwmMax: 100
-pwmMin: 15
+pwmMax: 100.0
+pwmMin: 15.0
 pwmHz: 70
