@@ -1,0 +1,12 @@
+#*** Config file for the GPIOs ***
+#GPIO Pin Assignments
+pump: 4
+
+#SPI Bus Details
+spiBus: 0
+spiDevice: 0
+
+#PWM Limits (See Docs)
+pwmMax: 100
+pwmMin: 15
+pwmHz: 70
