@@ -31,13 +31,13 @@ class gpioInterface():
         self.__configureIO()
     
     def pumpOn(self):
-        gpio.output(self.cfg["PUMP"],gpio.HIGH)
+        gpio.output(self.cfg["pump"],gpio.HIGH)
     
     def pumpOff(self):
-        gpio.output(self.cfg["PUMP"],gpio.LOW)
+        gpio.output(self.cfg["pump"],gpio.LOW)
 	
     def pumpPWMstart(self, Hz, dc):
-        self.pwm = gpio.PWM(self.cfg["PUMP"],Hz)
+        self.pwm = gpio.PWM(self.cfg["pump"],Hz)
         self.pwm.start(dc)
 	
     def pumpPWMalter(self, Hz, dc):
@@ -61,7 +61,7 @@ class gpioInterface():
     def __configureIO(self):
         try:
             gpio.setmode(gpio.BCM)
-            gpio.setup(self.cfg["PUMP"], gpio.OUT)
+            gpio.setup(self.cfg["pump"], gpio.OUT)
             self.spi.open(self.cfg["spiBus"],self.cfg["spiDevice"])
         except:
             raise SystemExit(IOError)

@@ -14,6 +14,7 @@ import yaml
 
 class yamlImport():
     
+    @staticmethod
     def importYAML(pathToFile):
         try:
             with open(pathToFile, "r") as f:

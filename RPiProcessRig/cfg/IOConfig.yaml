@@ -10,3 +10,7 @@ spiDevice: 0
 pwmMax: 100.0
 pwmMin: 15.0
 pwmHz: 70
+
+#ADC calibration
+adcM: 0.1389
+adcC: -27.505

@@ -23,3 +23,5 @@ def main():
         time.sleep(2)
     IO.pumpOff()
     IO.cleanUp()
+    
+if __name__ == '__main__':main()
