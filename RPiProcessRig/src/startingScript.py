@@ -25,7 +25,7 @@ def modbusFunc(mServ):
         time.sleep(1)
         print("Respawning MODBUS Server")
     
-def IOFunc(mServ):
+def IOFunc(IO, mServ):
     while(True):
         print("IO sampler starting")
         if IO.runSampler(mServ) == 2:
