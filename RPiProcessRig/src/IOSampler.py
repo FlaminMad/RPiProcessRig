@@ -22,21 +22,16 @@ class IOSampler():
         self.Interval = 1
     
     def runSampler(self, mServ):
-        try:        
-            while True:
-                loopTime = time.time()
-                
-                self.__pumpCtrl(mServ)                
-                self.__adcRead(mServ)
-                self.__alarmHandling(mServ)
-                self.__heartbeatCounter(mServ)
-                if mServ.context[0].getValues(1,0,1)[0] == 0:
-                    self.__shutdown(mServ)                    
-                    return 2
-                    
-                time.sleep(self.Interval - (time.time() - loopTime))
-        except:
-            pass
+        while(True):
+            loopTime = time.time()
+            self.__pumpCtrl(mServ)                
+            self.__adcRead(mServ)
+            self.__alarmHandling(mServ)
+            self.__heartbeatCounter(mServ)
+            if mServ.context[0].getValues(1,0,1)[0] == 1:
+                self.__shutdown(mServ)                    
+                return 2
+            time.sleep(self.Interval - (time.time() - loopTime))
 
     
     def __pumpCtrl(self,mServ):
