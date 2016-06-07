@@ -9,7 +9,7 @@
 @desc:   Interface for the RPI GPIO pins. Note that the spidev kernel module
          spi-bcm2735 or similar needs to be loaded.
 """
-
+import time
 import spidev
 import RPi.GPIO as gpio
 from osTools import osTools
@@ -29,16 +29,15 @@ class gpioInterface():
         if osTool.checkAdmin() == False:
             raise IOError("Admin Rights Required To Access GPIO Header")
         self.__configureIO()
-    
-    def pumpOn(self):
-        gpio.output(self.cfg["pump"],gpio.HIGH)
-    
-    def pumpOff(self):
-        gpio.output(self.cfg["pump"],gpio.LOW)
 	
-    def pumpPWMstart(self, Hz, dc):
-        self.pwm = gpio.PWM(self.cfg["pump"],Hz)
-        self.pwm.start(dc)
+    def pumpPWMstart(self, dc):
+        self.pwm = gpio.PWM(self.cfg["pump"],self.cfg["pwmHz"])
+        if dc <> 100:
+            self.pwm.start(100)
+            time.sleep(0.1)
+            self.pumpPWMalter(0,dc)
+        else:
+            self.pwm.start(100)
 	
     def pumpPWMalter(self, Hz, dc):
         if Hz != 0:
@@ -48,12 +47,18 @@ class gpioInterface():
 	
     def pumpPWMstop(self):
         self.pwm.stop()
-	
-    def readADC(self, channel):
-        adc = self.spi.xfer2([1,(8+channel)<<4,0])
+        
+    def readADC(self):
+        adc = self.spi.xfer2([1,(8+self.cfg["LTChannel"])<<4,0])
         data = ((adc[1]&3) << 8) + adc[2]
         return data
-	
+
+    def alarmsT2(self):
+        # Harware not yet installed
+        # Needs to consist of two inputs, one high level and one low in T2
+        NotImplementedError
+        return 0
+
     def cleanUp(self):
         gpio.cleanup()
         self.spi.close()

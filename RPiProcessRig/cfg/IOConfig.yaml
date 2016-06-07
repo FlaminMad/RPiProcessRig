@@ -2,6 +2,9 @@
 #GPIO Pin Assignments
 pump: 4
 
+#MCP3008 Channels
+LTChannel: 7
+
 #SPI Bus Details
 spiBus: 0
 spiDevice: 0
