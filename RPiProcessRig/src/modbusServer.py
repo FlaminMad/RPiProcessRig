@@ -9,7 +9,7 @@
 @desc:   MODBUS server for the RPiProcessRig project
 """
 
-from pymodbus.server.sync import StartTcpServer
+from pymodbus.server.sync import ModbusTcpServer
 from pymodbus.device import ModbusDeviceIdentification
 from pymodbus.datastore import ModbusSequentialDataBlock
 from pymodbus.datastore import ModbusSlaveContext, ModbusServerContext
@@ -20,6 +20,7 @@ class modbusServer():
         self.logging()
         self.setupContext()
         self.serverInfo()
+        self.servTCP = ModbusTcpServer(self.context, identity=self.identity, address=('192.168.0.12', 5020))
 
     def logging(self):
         import logging
@@ -44,7 +45,7 @@ class modbusServer():
         self.identity.MajorMinorRevision = '1.0'
 
     def runServer(self):
-        StartTcpServer(self.context, identity=self.identity, address=('192.168.0.12', 5020))
+        self.servTCP.serve_forever()
         
         
         
