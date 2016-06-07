@@ -19,11 +19,8 @@ mServ = modbusServer()
 IO = IOSampler()
 
 def modbusFunc(mServ): 
-    while(True):
-        print("Server starting")
-        mServ.runServer()
-        time.sleep(1)
-        print("Respawning MODBUS Server")
+    print("Server starting")
+    mServ.runServer()
     
 def IOFunc(mServ, IO):
     while(True):
