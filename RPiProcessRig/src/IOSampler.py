@@ -42,15 +42,19 @@ class IOSampler():
                 if hardPWM == 0:
                     self.IO.pumpPWMstop()
                     mServ.context[0].setValues(2,0,[0])
+                    mServ.context[0].setValues(3,1,[mServ.context[0].getValues(3,0,1)[0]])
                 else:
                     self.IO.pumpPWMalter(0,hardPWM)
+                    mServ.context[0].setValues(3,1,[mServ.context[0].getValues(3,0,1)[0]])
             else:
                 if hardPWM <> 0:
                     self.IO.pumpPWMstart(hardPWM)
                     mServ.context[0].setValues(2,0,[1])
+                    mServ.context[0].setValues(3,1,[mServ.context[0].getValues(3,0,1)[0]])
             mServ.context[0].setValues(3,2,[hardPWM])
         
         #Alter Pump PWM Frequency
+        #TODO: load the default requency
         if mServ.context[0].getValues(3,3,1)[0] <> mServ.context[0].getValues(3,4,1)[0]:
             if mServ.context[0].getValues(2,0,1)[0] == 1:
                 self.IO.pumpPWMalter(mServ.context[0].getValues(3,3,1)[0],0)
@@ -86,8 +90,10 @@ class IOSampler():
     
     def __heartbeatCounter(self, mServ):
         # Ensure the GPIO loop has not frozen
-        #TODO: set maximum with reset to zero
-        mServ.context[0].setValues(4,1,[(mServ.context[0].getValues(4,1,1)[0]+1)])
+        if mServ.context[0].getValues(4,1,1)[0] == 65535:
+            mServ.context[0].setValues(4,1,[0])
+        else:
+            mServ.context[0].setValues(4,1,[(mServ.context[0].getValues(4,1,1)[0]+1)])
     
     
     def __shutdown(self, mServ):

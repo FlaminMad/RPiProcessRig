@@ -20,7 +20,7 @@ class modbusServer():
         self.logging()
         self.setupContext()
         self.serverInfo()
-        self.servTCP = ModbusTcpServer(self.context, identity=self.identity, address=('192.168.0.12', 5020))
+        self.servTCP = ModbusTcpServer(self.context, identity=self.identity, address=('192.168.0.3', 502))
 
     def logging(self):
         import logging
