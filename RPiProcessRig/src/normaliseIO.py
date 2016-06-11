@@ -19,7 +19,14 @@ class normaliseIO():
 
     
     def adcConv(self,adcVal):
-        return ((self.cfg["adcM"]*adcVal) + self.cfg["adcC"])
+        tankLevel = ((self.cfg["adcM"]*adcVal) + self.cfg["adcC"])
+        if tankLevel < -5:
+            ReferenceError("Tank Level out of calibration")
+            return 0
+        elif tankLevel <= 0:
+            return 0
+        else:
+            return round(tankLevel,2)
 
     
     def pwmConv(self,softPWM):

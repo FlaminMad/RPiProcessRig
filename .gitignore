@@ -49,6 +49,7 @@ Temporary Items
 # MODBUS Master Simulator Files
 *.rmf
 *.rms
+Transmission.log
 
 # Python Files
 *.pyc

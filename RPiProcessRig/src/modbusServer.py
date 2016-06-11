@@ -8,7 +8,7 @@
 @deps:   pymodbus
 @desc:   MODBUS server for the RPiProcessRig project
 """
-
+from yamlImport import yamlImport
 from pymodbus.server.sync import ModbusTcpServer
 from pymodbus.device import ModbusDeviceIdentification
 from pymodbus.datastore import ModbusSequentialDataBlock
@@ -18,9 +18,13 @@ class modbusServer():
 
     def __init__(self):
         self.logging()
+        self.cfg = yamlImport.importYAML("../cfg/modbusSettings.yaml")
         self.setupContext()
         self.serverInfo()
-        self.servTCP = ModbusTcpServer(self.context, identity=self.identity, address=('192.168.0.3', 502))
+        self.servTCP = ModbusTcpServer(self.context, 
+                                       identity=self.identity, 
+                                       address=(self.cfg["ip"], self.cfg["tcpPort"]))
+        #TODO: Add option of RTU server as well
 
     def logging(self):
         import logging
@@ -38,21 +42,11 @@ class modbusServer():
 
     def serverInfo(self):
         self.identity = ModbusDeviceIdentification()
-        self.identity.VendorName  = 'FlaminMad'
-        self.identity.VendorUrl   = 'http://github.com/FlaminMad/RPiProcessRig'
-        self.identity.ProductName = 'RPi Process Rig'
-        self.identity.ModelName   = 'RPi Model B'
-        self.identity.MajorMinorRevision = '1.0'
+        self.identity.VendorName  = self.cfg["VendorName"]
+        self.identity.VendorUrl   = self.cfg["VendorUrl"]
+        self.identity.ProductName = self.cfg["ProductName"]
+        self.identity.ModelName   = self.cfg["ModelName"]
+        self.identity.MajorMinorRevision = self.cfg["Revision"]
 
     def runServer(self):
-        self.servTCP.serve_forever()
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        self.servTCP.serve_forever()      

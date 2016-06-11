@@ -1,0 +1,13 @@
+#Settings for the MODBUS Connection
+method: tcp
+
+#MODBUS TCP
+ip: '192.168.0.3'
+tcpPort: 502
+
+#Server Identity
+VendorName: 'FlaminMad'
+VendorUrl: 'http://github.com/FlaminMad/RPiProcessRig'
+ProductName: 'RPi Process Rig'
+ModelName: 'RPi Model B'
+Revision: '1.0'

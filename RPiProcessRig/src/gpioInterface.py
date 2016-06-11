@@ -54,8 +54,8 @@ class gpioInterface():
         return data
 
     def alarmsT2(self):
-        # Harware not yet installed
-        # Needs to consist of two inputs, one high level and one low in T2
+        #TODO: Harware not yet installed
+        #TODO: Needs to consist of two inputs, one high level and one low in T2
         NotImplementedError
         return 0
 
