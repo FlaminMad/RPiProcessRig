@@ -54,7 +54,7 @@ class modbusServer():
         hr = ModbusSequentialDataBlock(1, self.builder.to_registers())
         
         #Setup datastore
-        store = ModbusSlaveContext(co,di,hr,ir)
+        store = ModbusSlaveContext(co=co,di=di,hr=hr,ir=ir)
         self.context = ModbusServerContext(slaves=store, single=True)
 
 
