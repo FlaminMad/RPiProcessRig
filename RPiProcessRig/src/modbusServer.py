@@ -40,12 +40,23 @@ class modbusServer():
         log.setLevel(logging.INFO)
     
     def __setupContext(self):
-        store = ModbusSlaveContext(
-            co = ModbusSequentialDataBlock(1, [0]*1),
-            di = ModbusSequentialDataBlock(1, [0]*6),
-            hr = ModbusSequentialDataBlock(1, [0]*5),
-            ir = ModbusSequentialDataBlock(1, [0]*2))
+        #Setup Coils
+        co = ModbusSequentialDataBlock(1, [0]*1)
+        di = ModbusSequentialDataBlock(1, [0]*6)
+        
+        #Setup Registers (Inc floats)
+        for i in range(0,2):
+            self.builder.add_32bit_float(0.0)
+        ir = ModbusSequentialDataBlock(1, self.builder.to_registers())
+        
+        for i in range(0,3):
+            self.builder.add_32bit_float(0.0)
+        hr = ModbusSequentialDataBlock(1, self.builder.to_registers())
+        
+        #Setup datastore
+        store = ModbusSlaveContext(co,di,hr,ir)
         self.context = ModbusServerContext(slaves=store, single=True)
+
 
     def __serverInfo(self):
         self.identity = ModbusDeviceIdentification()
@@ -97,4 +108,5 @@ class modbusServer():
         return self.builder.to_registers()
     
     def decodeData(self,data):
-        pass
+        decoder = BinaryPayloadDecoder.fromRegisters(data, endian=Endian.Little)
+        return round(decoder.decode_32bit_float(),2)

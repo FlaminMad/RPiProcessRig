@@ -67,7 +67,7 @@ class IOSampler():
         
     
     def __adcRead(self, mServ):
-         mServ.context[0].setValues(4,0,[self.conv.adcConv(self.IO.readADC())])
+        mServ.context[0].setValues(4,0,[mServ.encodeData(self.conv.adcConv(self.IO.readADC()))])
         
     
     def __alarmHandling(self, mServ):
@@ -99,7 +99,7 @@ class IOSampler():
     
     def __loadPWMFreq(self, mServ):
         self.IO.pumpFreqChange(-1)
-        mServ.context[0].getValues(3,3,[self.IO.pwmHz,self.IO.pwmHz])
+        mServ.context[0].setValues(3,3,[self.IO.pwmHz,self.IO.pwmHz])
         
     def __shutdown(self, mServ):
         # Cleanup and shutdown the GPIO safely
