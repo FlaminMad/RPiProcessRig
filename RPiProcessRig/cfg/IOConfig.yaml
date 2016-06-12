@@ -1,4 +1,7 @@
 #*** Config file for the GPIOs ***
+#Sample Time (s)
+interval: 1
+
 #GPIO Pin Assignments
 pump: 4
 

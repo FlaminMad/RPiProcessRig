@@ -5,6 +5,15 @@ method: tcp
 ip: '192.168.0.3'
 tcpPort: 502
 
+#MODBUS RTU
+rtuPort: /dev/ttyUSB0
+stopbits: 1
+bytesize: 8
+parity: N
+baudrate: 9600
+timeout: 1
+
+
 #Server Identity
 VendorName: 'FlaminMad'
 VendorUrl: 'http://github.com/FlaminMad/RPiProcessRig'

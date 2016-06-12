@@ -19,7 +19,7 @@ class gpioInterface():
     
     def __init__(self):
         #Create Instances
-        osTool = osTools()      
+        osTool = osTools()
         self.spi = spidev.SpiDev()
 
         #Load Settings
@@ -31,7 +31,7 @@ class gpioInterface():
         self.__configureIO()
 	
     def pumpPWMstart(self, dc):
-        self.pwm = gpio.PWM(self.cfg["pump"],self.cfg["pwmHz"])
+        self.pwm = gpio.PWM(self.cfg["pump"],self.pwmHz)
         if dc <> 100:
             self.pwm.start(100)
             time.sleep(0.1)
@@ -41,7 +41,9 @@ class gpioInterface():
 	
     def pumpPWMalter(self, Hz, dc):
         if Hz != 0:
+            UserWarning("Altering Frequency can cause undesired behaviour")
             self.pwm.ChangeFrequency(Hz)
+            self.pwmHz = Hz
         if dc != 0:
 		self.pwm.ChangeDutyCycle(dc)
 	
@@ -63,6 +65,14 @@ class gpioInterface():
         gpio.cleanup()
         self.spi.close()
 
+    def pumpFreqChange(self,freq):
+        #For when the pump is not running
+        if freq == (-1):        
+            self.pwmHz = self.cfg["pwmHz"]
+        else:
+            UserWarning("Altering Frequency can cause undesired behaviour")
+            self.pwmHz = freq
+        
     def __configureIO(self):
         try:
             gpio.setmode(gpio.BCM)

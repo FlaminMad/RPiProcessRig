@@ -36,6 +36,5 @@ IO = Thread(target=IOFunc, args = (mServ,IO))
 MF.start()
 IO.start()
 IO.join()
-mServ.servTCP.server_close()
-mServ.servTCP.shutdown()
+mServ.stopServer()
 print "Exiting!"

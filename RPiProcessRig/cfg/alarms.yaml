@@ -1,0 +1,7 @@
+#Alarm settings for the system
+#Tank 1 (Control Tank)
+T1LAL: 5
+T1LAH: 95
+T1LAHH: 100
+
+#Note Tank 2 alarms are latching

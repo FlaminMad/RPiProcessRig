@@ -6,10 +6,11 @@
 @rev:    1
 @lang:   Python 2.7
 @deps:   <>
-@desc:   <>
+@desc:   Main loop to run the
 """
 
 import time
+from yamlImport import yamlImport
 from gpioInterface import gpioInterface
 from normaliseIO import normaliseIO
 
@@ -19,9 +20,11 @@ class IOSampler():
         # Initialise Instances
         self.IO = gpioInterface()
         self.conv = normaliseIO()
-        self.Interval = 1
+        self.alarmCfg = yamlImport.importYAML("../cfg/alarms.yaml")
+        self.Interval = self.IO.cfg["interval"]
     
     def runSampler(self, mServ):
+        self.__loadPWMFreq(mServ)
         while(True):
             loopTime = time.time()
             self.__pumpCtrl(mServ)                
@@ -29,7 +32,7 @@ class IOSampler():
             self.__alarmHandling(mServ)
             self.__heartbeatCounter(mServ)
             if mServ.context[0].getValues(1,0,1)[0] == 1:
-                self.__shutdown(mServ)                    
+                self.__shutdown(mServ)
                 return 2
             time.sleep(self.Interval - (time.time() - loopTime))
 
@@ -54,14 +57,13 @@ class IOSampler():
             mServ.context[0].setValues(3,2,[hardPWM])
         
         #Alter Pump PWM Frequency
-        #TODO: load the default requency
         if mServ.context[0].getValues(3,3,1)[0] <> mServ.context[0].getValues(3,4,1)[0]:
             if mServ.context[0].getValues(2,0,1)[0] == 1:
                 self.IO.pumpPWMalter(mServ.context[0].getValues(3,3,1)[0],0)
                 mServ.context[0].setValues(3,4,[mServ.context[0].getValues(3,3,1)[0]])
             else:
-                #TODO: Implement a way of changing the default startup frequency
-                print("DEBUG: Pump needs to be running")
+                self.IO.pumpFreqChange(mServ.context[0].getValues(3,3,1)[0])
+                mServ.context[0].setValues(3,4,[mServ.context[0].getValues(3,3,1)[0]])
         
     
     def __adcRead(self, mServ):
@@ -70,11 +72,11 @@ class IOSampler():
     
     def __alarmHandling(self, mServ):
         # Alarms for T1 (Tank under control)
-        if mServ.context[0].getValues(4,0,1)[0] <= 5:
+        if mServ.context[0].getValues(4,0,1)[0] <= self.alarmCfg["T1LAL"]:
             mServ.context[0].setValues(2,1,[1,0,0])
-        elif mServ.context[0].getValues(4,0,1)[0] >= 95:
+        elif mServ.context[0].getValues(4,0,1)[0] >= self.alarmCfg["T1LAH"]:
             mServ.context[0].setValues(2,1,[0,1,0])
-        elif mServ.context[0].getValues(4,0,1)[0] >= 100:
+        elif mServ.context[0].getValues(4,0,1)[0] >= self.alarmCfg["T1LAHH"]:
             mServ.context[0].setValues(2,1,[0,0,1])
         else:
             mServ.context[0].setValues(2,1,[0,0,0])
@@ -95,7 +97,10 @@ class IOSampler():
         else:
             mServ.context[0].setValues(4,1,[(mServ.context[0].getValues(4,1,1)[0]+1)])
     
-    
+    def __loadPWMFreq(self, mServ):
+        self.IO.pumpFreqChange(-1)
+        mServ.context[0].getValues(3,3,[self.IO.pwmHz,self.IO.pwmHz])
+        
     def __shutdown(self, mServ):
         # Cleanup and shutdown the GPIO safely
         if mServ.context[0].getValues(2,0,1)[0] == 1:
