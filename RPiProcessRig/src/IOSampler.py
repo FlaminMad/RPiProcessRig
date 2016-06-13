@@ -40,32 +40,35 @@ class IOSampler():
 
     
     def __pumpCtrl(self,mServ):
+        #Decode registers
+        floatReg = mServ.decodeData(mServ.context[0].getValues(3,0,10))
+        
         #Alter Pump Duty Cycle
-        if mServ.context[0].getValues(3,0,1)[0] <> mServ.context[0].getValues(3,1,1)[0]:
-            hardPWM = self.conv.pwmConv(mServ.context[0].getValues(3,0,1)[0])
+        if floatReg[0] <> floatReg[1]:
+            hardPWM = self.conv.pwmConv(floatReg[1])
             if mServ.context[0].getValues(2,0,1)[0] == 1:
                 if hardPWM == 0:
                     self.IO.pumpPWMstop()
                     mServ.context[0].setValues(2,0,[0])
-                    mServ.context[0].setValues(3,1,[mServ.context[0].getValues(3,0,1)[0]])
+                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]]))
                 else:
                     self.IO.pumpPWMalter(0,hardPWM)
-                    mServ.context[0].setValues(3,1,[mServ.context[0].getValues(3,0,1)[0]])
+                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]]))
             else:
                 if hardPWM <> 0:
                     self.IO.pumpPWMstart(hardPWM)
                     mServ.context[0].setValues(2,0,[1])
-                    mServ.context[0].setValues(3,1,[mServ.context[0].getValues(3,0,1)[0]])
-            mServ.context[0].setValues(3,2,[hardPWM])
+                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]]))
+            mServ.context[0].setValues(3,4,mServ.encodeData([hardPWM]))
         
         #Alter Pump PWM Frequency
-        if mServ.context[0].getValues(3,3,1)[0] <> mServ.context[0].getValues(3,4,1)[0]:
+        if floatReg[3] <> floatReg[4]:
             if mServ.context[0].getValues(2,0,1)[0] == 1:
-                self.IO.pumpPWMalter(mServ.context[0].getValues(3,3,1)[0],0)
-                mServ.context[0].setValues(3,4,[mServ.context[0].getValues(3,3,1)[0]])
+                self.IO.pumpPWMalter(floatReg[3],0)
+                mServ.context[0].setValues(3,8,mServ.encodeData([floatReg[3]]))
             else:
-                self.IO.pumpFreqChange(mServ.context[0].getValues(3,3,1)[0])
-                mServ.context[0].setValues(3,4,[mServ.context[0].getValues(3,3,1)[0]])
+                self.IO.pumpFreqChange(floatReg[3])
+                mServ.context[0].setValues(3,8,mServ.encodeData([floatReg[3]]))
         
     
     def __adcRead(self, mServ):

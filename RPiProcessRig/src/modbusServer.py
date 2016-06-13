@@ -112,5 +112,8 @@ class modbusServer():
         return self.builder.to_registers()
     
     def decodeData(self,data):
+        returnData = [0]*(len(data)/2)
         decoder = BinaryPayloadDecoder.fromRegisters(data, endian=Endian.Little)
-        return round(decoder.decode_32bit_float(),2)
+        for i in range(0,len(data)/2):
+            returnData[i] = round(decoder.decode_32bit_float(),2)
+        return returnData
