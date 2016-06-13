@@ -6,7 +6,7 @@
 @rev:    1
 @lang:   Python 2.7
 @deps:   <>
-@desc:   Main loop to run the
+@desc:   Main loop to sample the IO and update the server datastore
 """
 
 import time
@@ -29,7 +29,7 @@ class IOSampler():
         self.__loadPWMFreq(mServ)
         while(True):
             loopTime = time.time()
-            #self.__pumpCtrl(mServ)                
+            self.__pumpCtrl(mServ)                
             self.__adcRead(mServ)
             self.__alarmHandling(mServ)
             self.__heartbeatCounter(mServ)
@@ -45,7 +45,7 @@ class IOSampler():
         
         #Alter Pump Duty Cycle
         if floatReg[0] <> floatReg[1]:
-            hardPWM = self.conv.pwmConv(floatReg[1])
+            hardPWM = self.conv.pwmConv(floatReg[0])
             if mServ.context[0].getValues(2,0,1)[0] == 1:
                 if hardPWM == 0:
                     self.IO.pumpPWMstop()
@@ -80,7 +80,8 @@ class IOSampler():
         # Alarms for T1 (Tank under control)
         if self.adcVal <= self.alarmCfg["T1LAL"]:
             mServ.context[0].setValues(2,1,[1,0,0])
-        elif self.adcVal >= self.alarmCfg["T1LAH"]:
+        elif self.adcVal >= self.alarmCfg["T1LAH"]\
+             and self.adcVal < self.alarmCfg["T1LAHH"]:
             mServ.context[0].setValues(2,1,[0,1,0])
         elif self.adcVal >= self.alarmCfg["T1LAHH"]:
             mServ.context[0].setValues(2,1,[0,0,1])
