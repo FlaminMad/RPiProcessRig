@@ -22,12 +22,14 @@ class IOSampler():
         self.conv = normaliseIO()
         self.alarmCfg = yamlImport.importYAML("../cfg/alarms.yaml")
         self.Interval = self.IO.cfg["interval"]
+        self.count = 0
+    
     
     def runSampler(self, mServ):
         self.__loadPWMFreq(mServ)
         while(True):
             loopTime = time.time()
-            self.__pumpCtrl(mServ)                
+            #self.__pumpCtrl(mServ)                
             self.__adcRead(mServ)
             self.__alarmHandling(mServ)
             self.__heartbeatCounter(mServ)
@@ -67,16 +69,17 @@ class IOSampler():
         
     
     def __adcRead(self, mServ):
-        mServ.context[0].setValues(4,0,[mServ.encodeData(self.conv.adcConv(self.IO.readADC()))])
+        self.adcVal = self.conv.adcConv(self.IO.readADC())
+        mServ.context[0].setValues(4,0,mServ.encodeData([self.adcVal]))
         
     
     def __alarmHandling(self, mServ):
         # Alarms for T1 (Tank under control)
-        if mServ.context[0].getValues(4,0,1)[0] <= self.alarmCfg["T1LAL"]:
+        if self.adcVal <= self.alarmCfg["T1LAL"]:
             mServ.context[0].setValues(2,1,[1,0,0])
-        elif mServ.context[0].getValues(4,0,1)[0] >= self.alarmCfg["T1LAH"]:
+        elif self.adcVal >= self.alarmCfg["T1LAH"]:
             mServ.context[0].setValues(2,1,[0,1,0])
-        elif mServ.context[0].getValues(4,0,1)[0] >= self.alarmCfg["T1LAHH"]:
+        elif self.adcVal >= self.alarmCfg["T1LAHH"]:
             mServ.context[0].setValues(2,1,[0,0,1])
         else:
             mServ.context[0].setValues(2,1,[0,0,0])
@@ -91,15 +94,17 @@ class IOSampler():
     
     
     def __heartbeatCounter(self, mServ):
-        # Ensure the GPIO loop has not frozen
-        if mServ.context[0].getValues(4,1,1)[0] == 65535:
-            mServ.context[0].setValues(4,1,[0])
+        self.count += 1
+        if self.count == 65535:
+            self.count = 0
         else:
-            mServ.context[0].setValues(4,1,[(mServ.context[0].getValues(4,1,1)[0]+1)])
+            mServ.context[0].setValues(4,2,mServ.encodeData([self.count]))
+    
     
     def __loadPWMFreq(self, mServ):
         self.IO.pumpFreqChange(-1)
-        mServ.context[0].setValues(3,3,[self.IO.pwmHz,self.IO.pwmHz])
+        mServ.context[0].setValues(3,6,mServ.encodeData([self.IO.pwmHz,self.IO.pwmHz]))
+        
         
     def __shutdown(self, mServ):
         # Cleanup and shutdown the GPIO safely

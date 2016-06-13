@@ -103,8 +103,12 @@ class modbusServer():
             raise ReferenceError("Invalid server type")
         
     def encodeData(self,data):
-        self.builder.reset()        
-        self.builder.add_32bit_float(data)
+        self.builder.reset()
+        try:
+            for i in range(0,len(data)):
+                self.builder.add_32bit_float(data[i])
+        except TypeError:
+            self.builder.add_32bit_float(data)
         return self.builder.to_registers()
     
     def decodeData(self,data):
