@@ -5,7 +5,7 @@
 @date:   Sat Jun 04/06/2016
 @rev:    1
 @lang:   Python 2.7
-@deps:   <>
+@deps:   <None>
 @desc:   Functions to convert the hardware data to sensible numbers/scales
 """
 
