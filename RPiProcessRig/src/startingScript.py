@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 @author: Alexander David Leech
-@date:   Sat Jun 04 22:40:49 2016
+@date:   25/10/2016
 @rev:    1
 @lang:   Python 2.7
-@deps:   <>
-@desc:   <>
+@deps:   <None>
+@desc:   Main file to start the MODBUS server and IO sampling system
 """
 
 import time
