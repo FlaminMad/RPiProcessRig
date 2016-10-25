@@ -14,11 +14,11 @@ Industrial processes are critical to the manufacturing of almost all products th
 The functionality of this repository is based upon the user building the hardware described within the project documents. It is a simple build process that is documented in a way that should be easy to follow, with full parts list and accompanied drawings. For those with no experience in control or electronics, following the instructions to the letter is recommended. It is noted however that this project can be expanded dramatically or a minor amount of funcationality cut if necessary.
 
 ###Software:
-Python 2.7  - Base Language
-YAML        - Config files imports
-pymodbus    - MODBUS client and comms to other units
-RPi.GPIO    - Access to GPIO pins
-spidev      - Comms with the analogue to digitsal converter chip
+* Python 2.7  - Base Language
+* YAML        - Config files imports
+* pymodbus    - MODBUS client and comms to other units
+* RPi.GPIO    - Access to GPIO pins
+* spidev      - Comms with the analogue to digitsal converter chip
 
 ## Installation:
 ### Linux:
