@@ -1,7 +1,7 @@
 # Level Control Process Rig
 
 ##Overview:
-Industrial processes are at the heart of manufacturing almost all products throughout the world. At the heart of these production plants is process control, an area mistaken as a dark art to many. This library and its associated hardware (see below) have been created to give those with limited resource access to a simple industrial rig that can be used for experimentation with a variety of different control algortithms. Due to the scale of this project, many real world industrial problems that still exist are amplified. A list of these can be ffound within the documentation.
+Industrial processes are critical to the manufacturing of almost all products throughout the world. At the heart of these production plants is process control, an area thought to be a dark art. This library and its associated hardware (see below) have been created to give those with limited resource access to a simple industrial rig that can be used for experimentation with a variety of different control algortithms. Due to the scale of this project, many real world industrial problems that exist are amplified. This provides a good basis for allowing the user to solve these problems, A list of which can be found within the documentation.
 
 ##Project Aims:
 * Provide a basic flow control process
@@ -14,7 +14,11 @@ Industrial processes are at the heart of manufacturing almost all products throu
 The functionality of this repository is based upon the user building the hardware described within the project documents. It is a simple build process that is documented in a way that should be easy to follow, with full parts list and accompanied drawings. For those with no experience in control or electronics, following the instructions to the letter is recommended. It is noted however that this project can be expanded dramatically or a minor amount of funcationality cut if necessary.
 
 ###Software:
-<IP>
+Python 2.7  - Base Language
+YAML        - Config files imports
+pymodbus    - MODBUS client and comms to other units
+RPi.GPIO    - Access to GPIO pins
+spidev      - Comms with the analogue to digitsal converter chip
 
 ## Installation:
 ### Linux:
@@ -23,5 +27,5 @@ The functionality of this repository is based upon the user building the hardwar
 ## Running:
 <IP>
 
-##Documentation
+## Documentation:
 Individual detailed documentation is not yet avaliable however is on my to do list!
