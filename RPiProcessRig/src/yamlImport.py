@@ -5,9 +5,8 @@
 @date:   03/06/2016
 @rev:    1
 @lang:   Python 2.7
-@deps:   RPi.GPIO, spidev, osTools
-@desc:   Interface for the RPI GPIO pins. Note that the spidev kernel module
-         spi-bcm2735 or similar needs to be loaded.
+@deps:   YAML
+@desc:   Class to use as an interface to import YAML files
 """
 
 import yaml
