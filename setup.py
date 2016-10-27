@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
 
 setup(name='RPiProcessRig',
       version='1.0',
@@ -10,6 +10,7 @@ setup(name='RPiProcessRig',
       license = 'MIT',
       keywords = "Raspberry Pi Process Control Industrial Rig Hardware Experimentation",
       url='https://github.com/FlaminMad/RPiProcessRig',
-      packages=['yaml', 'pymodbus','spidev','RPi.GPIO'],
-      py_modules=
-     )
+      packages=['RPiProcessRig'],      
+      package_dir={'RPiProcessRig' : 'RPiProcessRig/src'},
+      package_data={'RPiProcessRig': ['../cfg/*.yaml']}
+      )
