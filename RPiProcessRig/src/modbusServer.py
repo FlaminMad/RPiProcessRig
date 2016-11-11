@@ -8,6 +8,7 @@
 @deps:   pymodbus
 @desc:   MODBUS server for the RPiProcessRig project
 """
+import socket
 from yamlImport import yamlImport
 
 from pymodbus.server.sync import ModbusTcpServer
@@ -65,12 +66,17 @@ class modbusServer():
         self.identity.ProductName = self.cfg["ProductName"]
         self.identity.ModelName   = self.cfg["ModelName"]
         self.identity.MajorMinorRevision = self.cfg["Revision"]
-
+    
+    def __getIPAddress(self):
+        if self.cfg["manualIP"] == "N":
+            return socket.gethostbyname(socket.gethostname())
+        return self.cfg["ip"]
+    
     def __configureServer(self):
         if self.cfg["method"] == "tcp":
             self.servTCP = ModbusTcpServer(self.context, 
                                            identity=self.identity, 
-                                           address=(self.cfg["ip"],
+                                           address=(self.__getIPAddress(),
                                                     self.cfg["tcpPort"]))
         elif self.cfg["method"] == "rtu":
             self.servRTU = ModbusSerialServer(self.context,

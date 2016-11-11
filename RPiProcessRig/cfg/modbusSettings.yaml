@@ -2,7 +2,8 @@
 method: tcp
 
 #MODBUS TCP
-ip: '192.168.1.155'
+manualIP: N
+ip: '192.168.0.0'
 tcpPort: 502
 
 #MODBUS RTU

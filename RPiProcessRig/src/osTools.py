@@ -33,8 +33,7 @@ class osTools:
             return 1
         else:
             raise SystemExit("Unsupported OS Type")
-
-
+        
     def kbdExit(self):
         if self.osType == 1:
             return self.__linuxExit()
