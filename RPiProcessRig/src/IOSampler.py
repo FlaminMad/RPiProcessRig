@@ -72,8 +72,10 @@ class IOSampler():
         
     
     def __adcRead(self, mServ):
-        self.adcVal = self.conv.adcConv(self.IO.readADC())
-        mServ.context[0].setValues(4,0,mServ.encodeData([self.adcVal]))
+        self.adcVal = self.IO.readADC()
+        mServ.context[0].setValues(4,6,mServ.encodeData([self.adcVal]))
+        self.CalVal = self.conv.adcConv(self.adcVal)
+        mServ.context[0].setValues(4,0,mServ.encodeData([self.CalVal]))
         
     
     def __alarmHandling(self, mServ):

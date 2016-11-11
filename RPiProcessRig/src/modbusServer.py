@@ -45,7 +45,7 @@ class modbusServer():
         di = ModbusSequentialDataBlock(1, [0]*6)
         
         #Setup Registers (Inc floats)
-        for i in range(0,2):
+        for i in range(0,3):
             self.builder.add_32bit_float(0.0)
         ir = ModbusSequentialDataBlock(1, self.builder.to_registers())
         

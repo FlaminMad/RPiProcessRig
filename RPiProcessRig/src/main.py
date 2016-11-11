@@ -28,7 +28,7 @@ def IOFunc(mServ, IO):
         if IO.runSampler(mServ) == 2:
             break
         time.sleep(1)
-        print("Respawning TO Sampler")
+        print("Respawning IO Sampler")
 
 
 MF = Thread(target=modbusFunc, args = (mServ,))
