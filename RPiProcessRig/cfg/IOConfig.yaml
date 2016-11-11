@@ -18,5 +18,5 @@ pwmMin: 15.0
 pwmHz: 70
 
 #ADC calibration
-adcM: 0.1389
-adcC: -27.505
+adcM: 0.4665
+adcC: -27.442
