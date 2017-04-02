@@ -11,7 +11,7 @@ Industrial processes are critical to the manufacturing of almost all products th
 
 ## Requirements
 ### Hardware:
-The functionality of this repository is based upon the user building the hardware described within the project documents. It is a simple build process that is documented in a way that should be easy to follow, with full parts list and accompanied drawings. For those with no experience in control or electronics, following the instructions to the letter is recommended. It is noted however that this project can be expanded dramatically or a minor amount of funcationality cut if necessary.
+The functionality of this repository is based upon the user building the hardware described within the project documents. That said, I have included a 'Simulation mode' which uses a set of equations to give an artifical reality you can control. I would however highly recommend building the harware. It is a simple build process that is documented in a way that should be easy to follow, with full parts list and accompanied drawings. For those with no experience in control or electronics, following the instructions to the letter is recommended. It is noted however that this project can be expanded dramatically or a minor amount of funcationality cut if necessary.
 
 ### Software:
 * Python 2.7  - Base Language
@@ -21,8 +21,11 @@ The functionality of this repository is based upon the user building the hardwar
 * spidev      - Comms with the analogue to digitsal converter chip
 
 ## Installation:
-### Linux:
+### Raspberry Pi:
 TBC
+
+### Linux:
+Although the program is not strictly designed for anything other than a Raspberry PI, the simulation mode will work on a conventional linux distro.
 
 ## Running:
 TBC
