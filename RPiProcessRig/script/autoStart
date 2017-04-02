@@ -1,0 +1,7 @@
+#!/bin/sh
+#Use systemctl enable /path/to/this/file
+#to start the script on boot (Arch Linux ARM)
+#Ensure the below path points to the main python file
+
+cd /home/alex/python/RPiProcessRig/RPiProcessRig/src
+python2 main.py
