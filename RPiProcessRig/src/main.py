@@ -12,29 +12,41 @@
 import time
 from threading import Thread
 from modbusServer import modbusServer
-from IOSampler import IOSampler
+from yamlImport import yamlImport
 
-# Initialise Instances
-mServ = modbusServer()
-IO = IOSampler()
 
-def modbusFunc(mServ): 
+def modbusFunc(mServ):
     print("Server starting")
     mServ.runServer()
     
 def IOFunc(mServ, IO):
     while(True):
-        print("IO sampler starting")
-        if IO.runSampler(mServ) == 2:
+        print("IO Code Starting")
+        if IO.run(mServ) == 2:
             break
         time.sleep(1)
-        print("Respawning IO Sampler")
+        print("Respawning IO Code")
 
+def IOMode():
+    if yamlImport.importYAML("../cfg/IOConfig.yaml")["simMode"]:
+        from IOSampler import IOSampler as IOS
+    else:
+        from IOSimulation import IOSimulation as IOS
+    return IOS
+        
+# Initialise Instances
+mServ = modbusServer()
+IO = IOMode()
 
+#Prepare Threads
 MF = Thread(target=modbusFunc, args = (mServ,))
 IO = Thread(target=IOFunc, args = (mServ,IO))
+
+#Start Program Threads
 MF.start()
 IO.start()
 IO.join()
+
+#Cleanup On Exit Condition
 mServ.stopServer()
 print "Exiting!"

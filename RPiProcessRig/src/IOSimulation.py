@@ -13,7 +13,7 @@ import time
 from yamlImport import yamlImport
 
 
-class IOSampler():
+class IOSimulation():
     def __init__(self):
         # Initialise Instances
         self.alarmCfg = yamlImport.importYAML("../cfg/alarms.yaml")
@@ -21,11 +21,11 @@ class IOSampler():
         self.count = 0
     
     
-    def runSampler(self, mServ):
+    def run(self, mServ):
         self.__loadPWMFreq(mServ)
         while(True):
             loopTime = time.time()
-            self.__pumpCtrl(mServ)                
+            self.__pumpCtrl(mServ)
             self.__adcRead(mServ)
             self.__alarmHandling(mServ)
             self.__heartbeatCounter(mServ)
@@ -63,8 +63,10 @@ class IOSampler():
         
     
     def __adcRead(self, mServ):
-        mServ.context[0].setValues(4,4,mServ.encodeData([0.0]))
-        self.adcVal = self.conv.adcConv(self.IO.readADC())
+        mServ.context[0].setValues(4,4,mServ.encodeData([0.0])) #Calibrated value set to zero as N/A in sim mode
+        
+        self.adcVal = 1 #Insert equation here relating to pump speed and time
+        
         mServ.context[0].setValues(4,0,mServ.encodeData([self.adcVal]))
         
     
@@ -81,12 +83,7 @@ class IOSampler():
             mServ.context[0].setValues(2,1,[0,0,0])
         
         # Alarms for T2 (Supply tank)
-        if self.IO.alarmsT2 == 1:
-            mServ.context[0].setValues(2,4,[1,0])
-        elif self.IO.alarmsT2 == 2:
-            mServ.context[0].setValues(2,4,[0,1])
-        else:
-            mServ.context[0].setValues(2,4,[0,0])
+        #Not applicable in SIM mode
     
     
     def __heartbeatCounter(self, mServ):

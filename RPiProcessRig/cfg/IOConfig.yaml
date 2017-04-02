@@ -1,4 +1,7 @@
 #*** Config file for the GPIOs ***
+#Simulation Mode Active
+simMode: 0
+
 #Sample Time (s)
 interval: 1
 

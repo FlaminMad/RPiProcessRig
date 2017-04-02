@@ -25,7 +25,7 @@ class IOSampler():
         self.count = 0
     
     
-    def runSampler(self, mServ):
+    def run(self, mServ):
         self.__loadPWMFreq(mServ)
         while(True):
             loopTime = time.time()
