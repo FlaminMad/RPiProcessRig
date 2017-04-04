@@ -17,7 +17,7 @@ class IOSimulation():
     def __init__(self):
         # Initialise Instances
         self.alarmCfg = yamlImport.importYAML("../cfg/alarms.yaml")
-        self.Interval = self.IO.cfg["interval"]
+        self.cfg = yamlImport.importYAML("../cfg/IOConfig.yaml")
         self.count = 0
     
     
@@ -32,7 +32,7 @@ class IOSimulation():
             if mServ.context[0].getValues(1,0,1)[0] == 1:
                 self.__shutdown(mServ)
                 return 2
-            time.sleep(self.Interval - (time.time() - loopTime))
+            time.sleep(self.cfg["interval"] - (time.time() - loopTime))
 
     
     def __pumpCtrl(self,mServ):
@@ -41,21 +41,18 @@ class IOSimulation():
         
         #Alter Pump Duty Cycle
         if floatReg[0] <> floatReg[1]:
-            hardPWM = self.conv.pwmConv(floatReg[0])
+            hardPWM = floatReg[0]
             if mServ.context[0].getValues(2,0,1)[0] == 1:
-                if hardPWM == 0:
-                    self.IO.pumpPWMstop()
-                    mServ.context[0].setValues(2,0,[0])
-                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]]))
+                if floatReg[0] == 0:
+                    mServ.context[0].setValues(2,0,[0]) 														 #Set pump running bit to 0
+                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]])) #Set pump speed to 0
                 else:
-                    self.IO.pumpPWMalter(0,hardPWM)
-                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]]))
+                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]])) #Update pump speed
             else:
-                if hardPWM <> 0:
-                    self.IO.pumpPWMstart(hardPWM)
-                    mServ.context[0].setValues(2,0,[1])
-                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]]))
-            mServ.context[0].setValues(3,4,mServ.encodeData([hardPWM]))
+                if floatReg[0] <> 0:
+                    mServ.context[0].setValues(2,0,[1]) 														 #Set pump running bit to 1
+                    mServ.context[0].setValues(3,2,mServ.encodeData([floatReg[0]])) #Update pump speed
+            mServ.context[0].setValues(3,4,mServ.encodeData([floatReg[0]]))         #N/A in sim mode
         
         #Alter Pump PWM Frequency
         if floatReg[3] <> floatReg[4]:
@@ -66,6 +63,10 @@ class IOSimulation():
         mServ.context[0].setValues(4,4,mServ.encodeData([0.0])) #Calibrated value set to zero as N/A in sim mode
         
         self.adcVal = 1 #Insert equation here relating to pump speed and time
+        # At this point we know the time elapsed since last run with cfg.interval
+        # Could do with a 2D equation relating both tank level and pump speed to flow
+        # Use collected data to obtain
+        # Would also be good to add noise to the signal for realism
         
         mServ.context[0].setValues(4,0,mServ.encodeData([self.adcVal]))
         
