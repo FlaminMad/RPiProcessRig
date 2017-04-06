@@ -12,8 +12,8 @@
 import time
 import spidev
 import RPi.GPIO as gpio
-from osTools import osTools
-from yamlImport import yamlImport
+from .osTools import osTools
+from .yamlImport import yamlImport
 
 class gpioInterface():
     
@@ -23,7 +23,7 @@ class gpioInterface():
         self.spi = spidev.SpiDev()
 
         #Load Settings
-        self.cfg = yamlImport.importYAML("../cfg/IOConfig.yaml")
+        self.cfg = yamlImport.importYAML("./cfg/IOConfig.yaml")
         
         #Initial Setup        
         if osTool.checkAdmin() == False:

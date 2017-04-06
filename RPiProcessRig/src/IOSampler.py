@@ -10,9 +10,9 @@
 """
 
 import time
-from yamlImport import yamlImport
-from gpioInterface import gpioInterface
-from normaliseIO import normaliseIO
+from .yamlImport import yamlImport
+from .gpioInterface import gpioInterface
+from .normaliseIO import normaliseIO
 
 
 class IOSampler():
@@ -20,7 +20,7 @@ class IOSampler():
         # Initialise Instances
         self.IO = gpioInterface()
         self.conv = normaliseIO()
-        self.alarmCfg = yamlImport.importYAML("../cfg/alarms.yaml")
+        self.alarmCfg = yamlImport.importYAML("./cfg/alarms.yaml")
         self.Interval = self.IO.cfg["interval"]
         self.count = 0
     

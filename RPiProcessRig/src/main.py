@@ -11,8 +11,8 @@
 
 import time
 from threading import Thread
-from modbusServer import modbusServer
-from yamlImport import yamlImport
+from .modbusServer import modbusServer
+from .yamlImport import yamlImport
 
 
 def modbusFunc(mServ):
@@ -28,7 +28,7 @@ def IOFunc(mServ, IO):
         print("Respawning IO Code")
 
 def IOMode():
-    if yamlImport.importYAML("../cfg/IOConfig.yaml")["simMode"]:
+    if yamlImport.importYAML("./cfg/IOConfig.yaml")["simMode"]:
         from IOSampler import IOSampler as IOS
     else:
         from IOSimulation import IOSimulation as IOS

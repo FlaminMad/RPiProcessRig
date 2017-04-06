@@ -9,7 +9,7 @@
 @desc:   MODBUS server for the RPiProcessRig project
 """
 import socket
-from yamlImport import yamlImport
+from .yamlImport import yamlImport
 
 from pymodbus.server.sync import ModbusTcpServer
 from pymodbus.server.sync import ModbusSerialServer
@@ -28,7 +28,7 @@ class modbusServer():
 
     def __init__(self):
         self.__logging()
-        self.cfg = yamlImport.importYAML("../cfg/modbusSettings.yaml")
+        self.cfg = yamlImport.importYAML("./cfg/modbusSettings.yaml")
         self.builder = BinaryPayloadBuilder(endian=Endian.Little)
         self.__setupContext()
         self.__serverInfo()

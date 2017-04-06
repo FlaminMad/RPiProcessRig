@@ -10,14 +10,14 @@
 """
 
 import time
-from yamlImport import yamlImport
+from .yamlImport import yamlImport
 
 
 class IOSimulation():
     def __init__(self):
         # Initialise Instances
-        self.alarmCfg = yamlImport.importYAML("../cfg/alarms.yaml")
-        self.cfg = yamlImport.importYAML("../cfg/IOConfig.yaml")
+        self.alarmCfg = yamlImport.importYAML("./cfg/alarms.yaml")
+        self.cfg = yamlImport.importYAML("./cfg/IOConfig.yaml")
         self.count = 0
     
     

@@ -9,12 +9,12 @@
 @desc:   Functions to convert the hardware data to sensible numbers/scales
 """
 
-from yamlImport import yamlImport
+from .yamlImport import yamlImport
 
 class normaliseIO():
     
     def __init__(self):
-        self.cfg = yamlImport.importYAML("../cfg/IOConfig.yaml")
+        self.cfg = yamlImport.importYAML("./cfg/IOConfig.yaml")
         self.__pwmEqn()
 
     
